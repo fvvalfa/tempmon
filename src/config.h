@@ -13,8 +13,6 @@
 #define ETH_PHY_RST         4               // ваш W5500_RST
 #define ETH_PHY_SPI_FREQ_MHZ 16             // 16–25 обычно нормально
 
-#define CHECK_INTERVAL_NETWORK  15000 // проверка каждые 10 секунд
-
 #define CHECK_INTERVAL_NETWORK  15000   // проверка состояния сети каждые 15 с
 
 // Таймауты DHCP / статики (мс)
@@ -22,12 +20,13 @@
 #define DHCP_RETRY_INTERVAL_MS  300000  // раз в 5 минут пробовать снова DHCP, если работаем на статике
 #define LINK_DOWN_REINIT_MS     60000   // полный reininit только если линк лежит > 1 мин
 
+
 // SPI пины для ESP
 #define ETH_SPI_SCK         18
 #define ETH_SPI_MISO        19
 #define ETH_SPI_MOSI        23
 
-//DEFAULT IP
+// DEFAULT / FALLBACK STATIC IP (используется, если DHCP не ответил или в настройках)
 #define MYIPADDR 192,168,1,177
 #define MYIPMASK 255,255,255,0
 #define MYDNS 192,168,1,1
@@ -51,9 +50,17 @@
 #define MAX_SENSORS_PER_BUS 5
 #define MAX_TOTAL_SENSORS 15
 
+// ========== SETTINGS / AUTH ==========
+#define MAX_USERS            5
+#define MAX_USERNAME_LEN     16
+#define MAX_PASSWORD_LEN     24
+#define MAX_SENSOR_NAME_LEN  20
+#define MAX_SNMP_COMM_LEN    24
+#define MAX_SNMP_OID_LEN     40
+#define SESSION_TIMEOUT_MS   1800000UL   // 30 минут
 
-// ========== SNMP: НАСТРОЙКИ ==========
+// ========== SNMP: НАСТРОЙКИ ПО УМОЛЧАНИЮ ==========
 #define SNMP_COMMUNITY_READ  "public"
 #define SNMP_COMMUNITY_WRITE "private"
-#define SNMP_OID_PREFIX      ".1.3.6.1.4.1.99999"   // свой префикс при необходимости
+#define SNMP_OID_PREFIX      ".1.3.6.1.4.1.99999"
 #define SNMP_NO_DATA         (-1270)                // -127.0 °C × 10

@@ -2,45 +2,50 @@
 #include <SNMP_Agent.h>
 #include "globals.h"
 #include "config.h"
+#include "settings.h"
 #include "Network.h"
 
-//SNMPAgent   snmp(SNMP_COMMUNITY_READ, SNMP_COMMUNITY_WRITE);
 SNMPAgent* snmp = nullptr;
-static NetworkUDP* snmpUdp;   // <-- создаем UDP-объект для ETH
+static NetworkUDP* snmpUdp = nullptr;
 int tempOID[BUS_COUNT][MAX_SENSORS_PER_BUS];
 
 void initSNMP() {
     Serial.println(F("\n=== Initializing SNMP ==="));
-    if (snmp != nullptr) return;          // защита от повторного вызова
+    if (snmp != nullptr) return;
 
-     if (!eth_connected) {
+    if (!settings.snmpEnabled) {
+        Serial.println(F("SNMP: disabled in settings"));
+        return;
+    }
+
+    if (!eth_connected) {
         Serial.println(F("SNMP: ETH not connected, deferring"));
         return;
     }
-     // Создаём UDP только теперь, когда Ethernet уже работает
+
     snmpUdp = new NetworkUDP();
     if (snmpUdp == nullptr) {
         Serial.println(F("SNMP: UDP allocation failed!"));
         return;
     }
     if (!snmpUdp->begin(161)) {
-    Serial.println(F("SNMP: UDP begin(161) FAILED!"));
-    delete snmpUdp; 
-    snmpUdp = nullptr;
-    return;
+        Serial.println(F("SNMP: UDP begin(161) FAILED!"));
+        delete snmpUdp;
+        snmpUdp = nullptr;
+        return;
     }
-    snmp = new SNMPAgent(SNMP_COMMUNITY_READ, SNMP_COMMUNITY_WRITE);
+
+    snmp = new SNMPAgent(settings.snmpCommunityRead, settings.snmpCommunityWrite);
     if (snmp == nullptr) {
         Serial.println(F("SNMP: allocation failed!"));
         snmpUdp->stop();
         delete snmpUdp;
         snmpUdp = nullptr;
         return;
-        
     }
-    
+
     snmp->setUDP(snmpUdp);
-    
+
     for (int b = 0; b < BUS_COUNT; b++) {
         for (int i = 0; i < MAX_SENSORS_PER_BUS; i++) {
             tempOID[b][i] = SNMP_NO_DATA;
@@ -49,17 +54,17 @@ void initSNMP() {
 
     for (int b = 0; b < BUS_COUNT; b++) {
         for (int i = 0; i < MAX_SENSORS_PER_BUS; i++) {
-            char oidStr[48];
-            snprintf(oidStr, sizeof(oidStr), SNMP_OID_PREFIX ".%d.%d.0", b + 1, i + 1);
-            snmp->addIntegerHandler(oidStr, &tempOID[b][i],false,false);
+            char oidStr[64];
+            snprintf(oidStr, sizeof(oidStr), "%s.%d.%d.0",
+                     settings.snmpOidPrefix, b + 1, i + 1);
+            snmp->addIntegerHandler(oidStr, &tempOID[b][i], false, false);
         }
     }
     snmp->sortHandlers();
     snmp->begin();
     Serial.print(F("SNMP OID base: "));
-    Serial.println(F(SNMP_OID_PREFIX));
-    Serial.println(F("SNMP agent listening on UDP/161 (read-only)"));
-
+    Serial.println(settings.snmpOidPrefix);
+    Serial.println(F("SNMP agent listening on UDP/161"));
 }
 
 void deinitSNMP() {
@@ -67,18 +72,13 @@ void deinitSNMP() {
 
     if (snmp == nullptr && snmpUdp == nullptr) return;
 
-    // 1. Останавливаем UDP
     if (snmpUdp) {
         snmpUdp->stop();
     }
-
-    // 2. Удаляем агент
     if (snmp) {
         delete snmp;
         snmp = nullptr;
     }
-
-    // 3. Освобождаем UDP
     if (snmpUdp) {
         delete snmpUdp;
         snmpUdp = nullptr;
