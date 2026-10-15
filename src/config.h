@@ -15,6 +15,12 @@
 
 #define CHECK_INTERVAL_NETWORK  15000 // проверка каждые 10 секунд
 
+#define CHECK_INTERVAL_NETWORK  15000   // проверка состояния сети каждые 15 с
+
+// Таймауты DHCP / статики (мс)
+#define DHCP_TIMEOUT_MS         20000   // сколько ждать DHCP после появления линка
+#define DHCP_RETRY_INTERVAL_MS  300000  // раз в 5 минут пробовать снова DHCP, если работаем на статике
+#define LINK_DOWN_REINIT_MS     60000   // полный reininit только если линк лежит > 1 мин
 
 // SPI пины для ESP
 #define ETH_SPI_SCK         18
