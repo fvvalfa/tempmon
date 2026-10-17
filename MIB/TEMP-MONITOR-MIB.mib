@@ -1,0 +1,281 @@
+-- TEMP-MONITOR-MIB
+-- SNMP MIB for ESP32 multi-bus DS18B20 temperature monitor
+-- OID prefix: .1.3.6.1.4.1.99999
+-- Compatible with the firmware in this repository
+
+TEMP-MONITOR-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+    MODULE-IDENTITY, OBJECT-TYPE, NOTIFICATION-TYPE,
+    Integer32, enterprises
+        FROM SNMPv2-SMI
+    DisplayString, TEXTUAL-CONVENTION
+        FROM SNMPv2-TC
+    MODULE-COMPLIANCE, OBJECT-GROUP, NOTIFICATION-GROUP
+        FROM SNMPv2-CONF;
+
+tempMonitor MODULE-IDENTITY
+    LAST-UPDATED "202610170000Z"
+    ORGANIZATION "ESP32 Temp Monitor"
+    CONTACT-INFO
+        "Project: ESP32 Temperature Monitor
+         GitHub: (your-repo-url)"
+    DESCRIPTION
+        "MIB module for ESP32-based multi-bus DS18B20 temperature
+         monitoring device with Ethernet, web UI and SNMP traps.
+
+         Temperatures are reported as Integer32 with resolution
+         0.1 °C (value = temperature * 10).
+         Special value -1270 means sensor absent / no data
+         (DEVICE_DISCONNECTED equivalent)."
+    REVISION "202610170000Z"
+    DESCRIPTION
+        "Initial version matching firmware OID layout and traps."
+    ::= { enterprises 99999 }
+
+-- ============================================================
+-- Textual conventions
+-- ============================================================
+
+TempValue ::= TEXTUAL-CONVENTION
+    DISPLAY-HINT "d-1"
+    STATUS       current
+    DESCRIPTION
+        "Temperature in tenths of a degree Celsius.
+         Example: 235 means 23.5 °C.
+         Value -1270 indicates no data / sensor missing."
+    SYNTAX       Integer32 (-1270 | -550..1250)
+        -- practical range of DS18B20 is -55..+125 °C
+
+-- ============================================================
+-- Object tree
+-- ============================================================
+
+tempObjects OBJECT IDENTIFIER ::= { tempMonitor 1 }
+
+-- ------------------------------------------------------------------
+-- Scalar / simple OID layout used by the firmware:
+--   <prefix>.<bus>.<sensor>.0
+-- where bus = 1..4, sensor = 1..5
+-- The firmware registers exactly these OIDs as Integer32 handlers.
+-- ------------------------------------------------------------------
+
+tempBus1 OBJECT IDENTIFIER ::= { tempMonitor 1 }
+tempBus2 OBJECT IDENTIFIER ::= { tempMonitor 2 }
+tempBus3 OBJECT IDENTIFIER ::= { tempMonitor 3 }
+tempBus4 OBJECT IDENTIFIER ::= { tempMonitor 4 }
+
+-- Bus 1 sensors
+tempB1S1 OBJECT-TYPE
+    SYNTAX      TempValue
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Temperature of Bus 1 Sensor 1 (tenths of °C)"
+    ::= { tempBus1 1 0 }
+
+tempB1S2 OBJECT-TYPE
+    SYNTAX      TempValue
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Temperature of Bus 1 Sensor 2 (tenths of °C)"
+    ::= { tempBus1 2 0 }
+
+tempB1S3 OBJECT-TYPE
+    SYNTAX      TempValue
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Temperature of Bus 1 Sensor 3 (tenths of °C)"
+    ::= { tempBus1 3 0 }
+
+tempB1S4 OBJECT-TYPE
+    SYNTAX      TempValue
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Temperature of Bus 1 Sensor 4 (tenths of °C)"
+    ::= { tempBus1 4 0 }
+
+tempB1S5 OBJECT-TYPE
+    SYNTAX      TempValue
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Temperature of Bus 1 Sensor 5 (tenths of °C)"
+    ::= { tempBus1 5 0 }
+
+-- Bus 2 sensors
+tempB2S1 OBJECT-TYPE
+    SYNTAX      TempValue
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Temperature of Bus 2 Sensor 1 (tenths of °C)"
+    ::= { tempBus2 1 0 }
+
+tempB2S2 OBJECT-TYPE
+    SYNTAX      TempValue
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Temperature of Bus 2 Sensor 2 (tenths of °C)"
+    ::= { tempBus2 2 0 }
+
+tempB2S3 OBJECT-TYPE
+    SYNTAX      TempValue
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Temperature of Bus 2 Sensor 3 (tenths of °C)"
+    ::= { tempBus2 3 0 }
+
+tempB2S4 OBJECT-TYPE
+    SYNTAX      TempValue
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Temperature of Bus 2 Sensor 4 (tenths of °C)"
+    ::= { tempBus2 4 0 }
+
+tempB2S5 OBJECT-TYPE
+    SYNTAX      TempValue
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Temperature of Bus 2 Sensor 5 (tenths of °C)"
+    ::= { tempBus2 5 0 }
+
+-- Bus 3 sensors
+tempB3S1 OBJECT-TYPE
+    SYNTAX      TempValue
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Temperature of Bus 3 Sensor 1 (tenths of °C)"
+    ::= { tempBus3 1 0 }
+
+tempB3S2 OBJECT-TYPE
+    SYNTAX      TempValue
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Temperature of Bus 3 Sensor 2 (tenths of °C)"
+    ::= { tempBus3 2 0 }
+
+tempB3S3 OBJECT-TYPE
+    SYNTAX      TempValue
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Temperature of Bus 3 Sensor 3 (tenths of °C)"
+    ::= { tempBus3 3 0 }
+
+tempB3S4 OBJECT-TYPE
+    SYNTAX      TempValue
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Temperature of Bus 3 Sensor 4 (tenths of °C)"
+    ::= { tempBus3 4 0 }
+
+tempB3S5 OBJECT-TYPE
+    SYNTAX      TempValue
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Temperature of Bus 3 Sensor 5 (tenths of °C)"
+    ::= { tempBus3 5 0 }
+
+-- Bus 4 sensors
+tempB4S1 OBJECT-TYPE
+    SYNTAX      TempValue
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Temperature of Bus 4 Sensor 1 (tenths of °C)"
+    ::= { tempBus4 1 0 }
+
+tempB4S2 OBJECT-TYPE
+    SYNTAX      TempValue
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Temperature of Bus 4 Sensor 2 (tenths of °C)"
+    ::= { tempBus4 2 0 }
+
+tempB4S3 OBJECT-TYPE
+    SYNTAX      TempValue
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Temperature of Bus 4 Sensor 3 (tenths of °C)"
+    ::= { tempBus4 3 0 }
+
+tempB4S4 OBJECT-TYPE
+    SYNTAX      TempValue
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Temperature of Bus 4 Sensor 4 (tenths of °C)"
+    ::= { tempBus4 4 0 }
+
+tempB4S5 OBJECT-TYPE
+    SYNTAX      TempValue
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Temperature of Bus 4 Sensor 5 (tenths of °C)"
+    ::= { tempBus4 5 0 }
+
+-- ============================================================
+-- Notifications (traps)
+-- ============================================================
+
+tempNotifications OBJECT IDENTIFIER ::= { tempMonitor 0 }
+
+-- Firmware uses enterprise-specific traps with:
+--   trap OID = <prefix>.0
+--   specific-trap = 1  → high temperature
+--   specific-trap = 2  → sensor missing
+--
+-- For SNMPv2c the device sends a Trap-PDU with snmpTrapOID
+-- corresponding to the objects below (or the numeric specific).
+
+tempHighTemp NOTIFICATION-TYPE
+    OBJECTS { }
+    STATUS  current
+    DESCRIPTION
+        "High temperature trap.
+         Sent when a sensor temperature stays above its configured
+         threshold for the configured hold time (holdSec).
+         specific-trap = 1 in the firmware."
+    ::= { tempNotifications 1 }
+
+tempSensorMissing NOTIFICATION-TYPE
+    OBJECTS { }
+    STATUS  current
+    DESCRIPTION
+        "Sensor missing / disconnected trap.
+         Sent once when a previously present sensor disappears.
+         specific-trap = 2 in the firmware."
+    ::= { tempNotifications 2 }
+
+-- ============================================================
+-- Conformance
+-- ============================================================
+
+tempConformance OBJECT IDENTIFIER ::= { tempMonitor 2 }
+
+tempGroups OBJECT IDENTIFIER ::= { tempConformance 1 }
+tempCompliances OBJECT IDENTIFIER ::= { tempConformance 2 }
+
+tempSensorGroup OBJECT-GROUP
+    OBJECTS {
+        tempB1S1, tempB1S2, tempB1S3, tempB1S4, tempB1S5,
+        tempB2S1, tempB2S2, tempB2S3, tempB2S4, tempB2S5,
+        tempB3S1, tempB3S2, tempB3S3, tempB3S4, tempB3S5,
+        tempB4S1, tempB4S2, tempB4S3, tempB4S4, tempB4S5
+    }
+    STATUS  current
+    DESCRIPTION
+        "All temperature sensor objects."
+    ::= { tempGroups 1 }
+
+tempNotificationGroup NOTIFICATION-GROUP
+    NOTIFICATIONS { tempHighTemp, tempSensorMissing }
+    STATUS  current
+    DESCRIPTION
+        "Temperature related notifications."
+    ::= { tempGroups 2 }
+
+tempBasicCompliance MODULE-COMPLIANCE
+    STATUS  current
+    DESCRIPTION
+        "The basic compliance statement for TEMP-MONITOR-MIB."
+    MODULE  -- this module
+        MANDATORY-GROUPS { tempSensorGroup, tempNotificationGroup }
+    ::= { tempCompliances 1 }
+
+END
