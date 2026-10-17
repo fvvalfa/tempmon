@@ -1,0 +1,522 @@
+zabbix_export:
+  version: '6.0'
+  groups:
+    - uuid: 4f856733494c40409326688cc1eb4a96
+      name: Templates/Temperature
+  templates:
+    - uuid: 961fa4652fd3473387db1553b5e430e6
+      template: 'Temp Monitor ESP32'
+      name: 'Temp Monitor ESP32'
+      description: |
+        Template for ESP32 DS18B20 Temperature Monitor (SNMP).
+        4 OneWire buses × up to 5 sensors.
+        Value = temperature × 10 (281 → 28.1 °C).
+        -1270 = sensor missing / disconnected / fault.
+      groups:
+        - name: Templates/Temperature
+      items:
+        - uuid: 6c1ee1cebf2b48818cad1b46d2c33f1e
+          name: 'Bus 1 Sensor 1'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.99999.1.1.0'
+          key: temp.bus1.sensor1
+          delay: 30s
+          history: 90d
+          trends: 365d
+          value_type: FLOAT
+          units: '°C'
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+            - type: JAVASCRIPT
+              parameters:
+                - |
+                  if (value == -127 || value == -127.0) return null;
+                  return parseFloat(value).toFixed(1);
+          tags:
+            - tag: bus
+              value: '1'
+            - tag: sensor
+              value: '1'
+
+        - uuid: 4eb378edc79046678d949f38974961d0
+          name: 'Bus 1 Sensor 2'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.99999.1.2.0'
+          key: temp.bus1.sensor2
+          delay: 30s
+          history: 90d
+          trends: 365d
+          value_type: FLOAT
+          units: '°C'
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+            - type: JAVASCRIPT
+              parameters:
+                - |
+                  if (value == -127 || value == -127.0) return null;
+                  return parseFloat(value).toFixed(1);
+          tags:
+            - tag: bus
+              value: '1'
+            - tag: sensor
+              value: '2'
+
+        - uuid: 8614ead8831f4864a5b3afd77cc92504
+          name: 'Bus 1 Sensor 3'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.99999.1.3.0'
+          key: temp.bus1.sensor3
+          delay: 30s
+          history: 90d
+          trends: 365d
+          value_type: FLOAT
+          units: '°C'
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+            - type: JAVASCRIPT
+              parameters:
+                - |
+                  if (value == -127 || value == -127.0) return null;
+                  return parseFloat(value).toFixed(1);
+          tags:
+            - tag: bus
+              value: '1'
+            - tag: sensor
+              value: '3'
+
+        - uuid: 920cd0f092a14c7bbfc22238f1d7e907
+          name: 'Bus 1 Sensor 4'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.99999.1.4.0'
+          key: temp.bus1.sensor4
+          delay: 30s
+          history: 90d
+          trends: 365d
+          value_type: FLOAT
+          units: '°C'
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+            - type: JAVASCRIPT
+              parameters:
+                - |
+                  if (value == -127 || value == -127.0) return null;
+                  return parseFloat(value).toFixed(1);
+          tags:
+            - tag: bus
+              value: '1'
+            - tag: sensor
+              value: '4'
+
+        - uuid: ae77601b40df403d9d69b2bd66c7bb3a
+          name: 'Bus 1 Sensor 5'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.99999.1.5.0'
+          key: temp.bus1.sensor5
+          delay: 30s
+          history: 90d
+          trends: 365d
+          value_type: FLOAT
+          units: '°C'
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+            - type: JAVASCRIPT
+              parameters:
+                - |
+                  if (value == -127 || value == -127.0) return null;
+                  return parseFloat(value).toFixed(1);
+          tags:
+            - tag: bus
+              value: '1'
+            - tag: sensor
+              value: '5'
+
+        - uuid: bb9632965f95468596f58e14b4928380
+          name: 'Bus 2 Sensor 1'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.99999.2.1.0'
+          key: temp.bus2.sensor1
+          delay: 30s
+          history: 90d
+          trends: 365d
+          value_type: FLOAT
+          units: '°C'
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+            - type: JAVASCRIPT
+              parameters:
+                - |
+                  if (value == -127 || value == -127.0) return null;
+                  return parseFloat(value).toFixed(1);
+          tags:
+            - tag: bus
+              value: '2'
+            - tag: sensor
+              value: '1'
+
+        - uuid: c7d7b011ca42404fac5f4f1eb28136b4
+          name: 'Bus 2 Sensor 2'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.99999.2.2.0'
+          key: temp.bus2.sensor2
+          delay: 30s
+          history: 90d
+          trends: 365d
+          value_type: FLOAT
+          units: '°C'
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+            - type: JAVASCRIPT
+              parameters:
+                - |
+                  if (value == -127 || value == -127.0) return null;
+                  return parseFloat(value).toFixed(1);
+          tags:
+            - tag: bus
+              value: '2'
+            - tag: sensor
+              value: '2'
+
+        - uuid: b2d438acbbdd427a97c616daed3f003d
+          name: 'Bus 2 Sensor 3'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.99999.2.3.0'
+          key: temp.bus2.sensor3
+          delay: 30s
+          history: 90d
+          trends: 365d
+          value_type: FLOAT
+          units: '°C'
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+            - type: JAVASCRIPT
+              parameters:
+                - |
+                  if (value == -127 || value == -127.0) return null;
+                  return parseFloat(value).toFixed(1);
+          tags:
+            - tag: bus
+              value: '2'
+            - tag: sensor
+              value: '3'
+
+        - uuid: 741c09f6a04f4a8a9048d52f7a70eb59
+          name: 'Bus 2 Sensor 4'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.99999.2.4.0'
+          key: temp.bus2.sensor4
+          delay: 30s
+          history: 90d
+          trends: 365d
+          value_type: FLOAT
+          units: '°C'
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+            - type: JAVASCRIPT
+              parameters:
+                - |
+                  if (value == -127 || value == -127.0) return null;
+                  return parseFloat(value).toFixed(1);
+          tags:
+            - tag: bus
+              value: '2'
+            - tag: sensor
+              value: '4'
+
+        - uuid: 695eeb1a61d9486f845bc1f522104875
+          name: 'Bus 2 Sensor 5'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.99999.2.5.0'
+          key: temp.bus2.sensor5
+          delay: 30s
+          history: 90d
+          trends: 365d
+          value_type: FLOAT
+          units: '°C'
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+            - type: JAVASCRIPT
+              parameters:
+                - |
+                  if (value == -127 || value == -127.0) return null;
+                  return parseFloat(value).toFixed(1);
+          tags:
+            - tag: bus
+              value: '2'
+            - tag: sensor
+              value: '5'
+
+        - uuid: ffbf1a20515446ec906f49e01333002a
+          name: 'Bus 3 Sensor 1'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.99999.3.1.0'
+          key: temp.bus3.sensor1
+          delay: 30s
+          history: 90d
+          trends: 365d
+          value_type: FLOAT
+          units: '°C'
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+            - type: JAVASCRIPT
+              parameters:
+                - |
+                  if (value == -127 || value == -127.0) return null;
+                  return parseFloat(value).toFixed(1);
+          tags:
+            - tag: bus
+              value: '3'
+            - tag: sensor
+              value: '1'
+
+        - uuid: 2f3200dc77674dd0ade20e7123fbcf83
+          name: 'Bus 3 Sensor 2'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.99999.3.2.0'
+          key: temp.bus3.sensor2
+          delay: 30s
+          history: 90d
+          trends: 365d
+          value_type: FLOAT
+          units: '°C'
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+            - type: JAVASCRIPT
+              parameters:
+                - |
+                  if (value == -127 || value == -127.0) return null;
+                  return parseFloat(value).toFixed(1);
+          tags:
+            - tag: bus
+              value: '3'
+            - tag: sensor
+              value: '2'
+
+        - uuid: e56e183800f8469895b70aebc87a4e05
+          name: 'Bus 3 Sensor 3'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.99999.3.3.0'
+          key: temp.bus3.sensor3
+          delay: 30s
+          history: 90d
+          trends: 365d
+          value_type: FLOAT
+          units: '°C'
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+            - type: JAVASCRIPT
+              parameters:
+                - |
+                  if (value == -127 || value == -127.0) return null;
+                  return parseFloat(value).toFixed(1);
+          tags:
+            - tag: bus
+              value: '3'
+            - tag: sensor
+              value: '3'
+
+        - uuid: 6c577e97c1474dbc8764ce8e498f7911
+          name: 'Bus 3 Sensor 4'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.99999.3.4.0'
+          key: temp.bus3.sensor4
+          delay: 30s
+          history: 90d
+          trends: 365d
+          value_type: FLOAT
+          units: '°C'
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+            - type: JAVASCRIPT
+              parameters:
+                - |
+                  if (value == -127 || value == -127.0) return null;
+                  return parseFloat(value).toFixed(1);
+          tags:
+            - tag: bus
+              value: '3'
+            - tag: sensor
+              value: '4'
+
+        - uuid: 1e657999e4634b75b10d76131d2c0840
+          name: 'Bus 3 Sensor 5'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.99999.3.5.0'
+          key: temp.bus3.sensor5
+          delay: 30s
+          history: 90d
+          trends: 365d
+          value_type: FLOAT
+          units: '°C'
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+            - type: JAVASCRIPT
+              parameters:
+                - |
+                  if (value == -127 || value == -127.0) return null;
+                  return parseFloat(value).toFixed(1);
+          tags:
+            - tag: bus
+              value: '3'
+            - tag: sensor
+              value: '5'
+
+        - uuid: 39acd56642d441e99c9aa5c16dbd129b
+          name: 'Bus 4 Sensor 1'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.99999.4.1.0'
+          key: temp.bus4.sensor1
+          delay: 30s
+          history: 90d
+          trends: 365d
+          value_type: FLOAT
+          units: '°C'
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+            - type: JAVASCRIPT
+              parameters:
+                - |
+                  if (value == -127 || value == -127.0) return null;
+                  return parseFloat(value).toFixed(1);
+          tags:
+            - tag: bus
+              value: '4'
+            - tag: sensor
+              value: '1'
+
+        - uuid: 0a6d2aa4c79f4a7fba33bc1f9e9ee098
+          name: 'Bus 4 Sensor 2'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.99999.4.2.0'
+          key: temp.bus4.sensor2
+          delay: 30s
+          history: 90d
+          trends: 365d
+          value_type: FLOAT
+          units: '°C'
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+            - type: JAVASCRIPT
+              parameters:
+                - |
+                  if (value == -127 || value == -127.0) return null;
+                  return parseFloat(value).toFixed(1);
+          tags:
+            - tag: bus
+              value: '4'
+            - tag: sensor
+              value: '2'
+
+        - uuid: 8abd3c36ac614879a04c9eaca9bc267a
+          name: 'Bus 4 Sensor 3'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.99999.4.3.0'
+          key: temp.bus4.sensor3
+          delay: 30s
+          history: 90d
+          trends: 365d
+          value_type: FLOAT
+          units: '°C'
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+            - type: JAVASCRIPT
+              parameters:
+                - |
+                  if (value == -127 || value == -127.0) return null;
+                  return parseFloat(value).toFixed(1);
+          tags:
+            - tag: bus
+              value: '4'
+            - tag: sensor
+              value: '3'
+
+        - uuid: ce4771d4222b47d6be2127deb35ba287
+          name: 'Bus 4 Sensor 4'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.99999.4.4.0'
+          key: temp.bus4.sensor4
+          delay: 30s
+          history: 90d
+          trends: 365d
+          value_type: FLOAT
+          units: '°C'
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+            - type: JAVASCRIPT
+              parameters:
+                - |
+                  if (value == -127 || value == -127.0) return null;
+                  return parseFloat(value).toFixed(1);
+          tags:
+            - tag: bus
+              value: '4'
+            - tag: sensor
+              value: '4'
+
+        - uuid: 90ab2e2b0fb84f88976ab619cbb9b235
+          name: 'Bus 4 Sensor 5'
+          type: SNMP_AGENT
+          snmp_oid: '1.3.6.1.4.1.99999.4.5.0'
+          key: temp.bus4.sensor5
+          delay: 30s
+          history: 90d
+          trends: 365d
+          value_type: FLOAT
+          units: '°C'
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+            - type: JAVASCRIPT
+              parameters:
+                - |
+                  if (value == -127 || value == -127.0) return null;
+                  return parseFloat(value).toFixed(1);
+          tags:
+            - tag: bus
+              value: '4'
+            - tag: sensor
+              value: '5'
+
+      tags:
+        - tag: class
+          value: temperature
+        - tag: target
+          value: esp32-ds18b20
